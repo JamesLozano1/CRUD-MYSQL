@@ -11,13 +11,21 @@ class CommpanyView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)    
 
-    def get(self, request):
-        # companies = Commpany.objects.all() cuando es un http response
-        companies = list(Commpany.objects.values())
-        if len(companies) > 0:
-            datos = {'message': 'Succes', 'companies': companies}
+    def get(self, request, id = 0):
+        if (id > 0):
+            companies = list(Commpany.objects.filter(id=id).values())
+            if (len(companies) > 0):
+                company = companies[0]
+                datos = {'message':'Success', 'companies': companies}
+            else:
+                datos = {'message':'Company ot found...'}
         else:
-            datos = {'message': 'Commpanies not found...'}
+            # companies = Commpany.objects.all() cuando es un http response
+            companies = list(Commpany.objects.values())
+            if len(companies) > 0:
+                datos = {'message': 'Succes', 'companies': companies}
+            else:
+                datos = {'message': 'Commpanies not found...'}
         return JsonResponse(datos)
 
     def post(self, request):
@@ -28,9 +36,32 @@ class CommpanyView(View):
         datos = {'menssage':'Success'}
         return JsonResponse(datos)
 
-    def put(self, request):
-        pass
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        # print(jd)
+        companies = list(Commpany.objects.filter(id=id).values())
+        if (len(companies) > 0):
+            company = Commpany.objects.get(id=id)
+            print(company)
+            company.name = jd['name']
+            company.website = jd['website']
+            company.foundation = jd['foundation']
+            company.save()
+            datos = {'message': 'Success'}
+        else:
+            datos = {'message': 'Commpanies not found...'}
+        return JsonResponse(datos)
 
-    def delete(self, request):
-        pass
+    def delete(self, request, id):
+        companies = list(Commpany.objects.filter(id=id).values())
+        if len(companies) > 0:
+            #¿Por qué llegamso hasta acá?
+            Commpany.objects.filter(id=id).delete()
+            datos = {'message': 'Success'}
+        else:
+            datos = {'message': 'Company bot found...'}
+        
+        return JsonResponse(datos)
+
+        
 
