@@ -57,6 +57,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost',
 ]
 
+
+
 ROOT_URLCONF = 'Proyecto_API.urls'
 
 TEMPLATES = [

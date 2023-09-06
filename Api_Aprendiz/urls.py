@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import aprendicesView
+from . import views 
 
 urlpatterns = [ 
-    path('aprendices/', aprendicesView.as_view()),
-    
+    path('home', views.index, name='home' ),
+    path('Crear_aprendiz', views.crear_Aprendiz, name='Crear_aprendiz'),
+    path('aprendiz', views.aprendiz, name='aprendiz'),
+#     path('aprendices/<int:id>', aprendicesView.as_view()),
+#     path('aprendices/put/<int:id>', aprendicesView.as_view()),
 ]
